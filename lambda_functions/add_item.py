@@ -2,6 +2,7 @@ import boto3
 import json
 from uuid import uuid4
 from helpers import buildResponse
+from constants import TABLE_NAME
 from botocore.exceptions import ClientError
 
 # Initialize the DynamoDB client
@@ -29,7 +30,7 @@ def lambda_handler(event, context):
             resultItem[key] = {"S": value}
 
         # Insert the item into the table
-        dynamodb.put_item(TableName="JittoItems", Item=resultItem)
+        dynamodb.put_item(TableName=TABLE_NAME, Item=resultItem)
 
         # Return success response
         return buildResponse(200, "Item added successfully with id " + itemId)

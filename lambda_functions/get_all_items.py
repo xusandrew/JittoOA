@@ -1,5 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
+from constants import TABLE_NAME
 from helpers import buildResponse
 
 # Initialize the DynamoDB client
@@ -8,7 +9,7 @@ dynamodb = boto3.client("dynamodb")
 
 def lambda_handler(event, context):
     try:
-        response = dynamodb.scan(TableName="JittoItems")
+        response = dynamodb.scan(TableName=TABLE_NAME)
 
         # Return the items from the table
         return buildResponse(200, response.get("Items", []))
