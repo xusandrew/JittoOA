@@ -20,17 +20,16 @@ def lambda_handler(event, context):
         if "name" not in item_data or "description" not in item_data:
             return buildResponse(400, "'name', and 'description' are required")
 
+        # Generate a unique id for the item
         itemId = item_data.get("id") or str(uuid4())
+        item_data["id"] = itemId
 
-        # Prepare the item to be inserted
-        item = {
-            "id": {"S": itemId},
-            "name": {"S": str(item_data["name"] or "")},
-            "description": {"S": str(item_data["description"])},
-        }
+        resultItem = {}
+        for key, value in item_data.items():
+            resultItem[key] = {"S": value}
 
         # Insert the item into the table
-        dynamodb.put_item(TableName="JittoItems", Item=item)
+        dynamodb.put_item(TableName="JittoItems", Item=resultItem)
 
         # Return success response
         return buildResponse(200, "Item added successfully with id " + itemId)
