@@ -14,6 +14,12 @@ The endpoints are:
 
 Authentication is done using API keys. Include your api key through the `x-api-key` header with each request.
 
+## Rate Limiting
+
+#### `Rate:` 1,000 requests per second 
+
+#### `Burst:` 500 requests 
+
 ## Endpoints
 
 #### `GET: /items`:
