@@ -1,6 +1,6 @@
 import boto3
-import json
 from botocore.exceptions import ClientError
+from constants import TABLE_NAME
 from helpers import buildResponse
 
 # Initialize the DynamoDB client
@@ -12,13 +12,12 @@ def lambda_handler(event, context):
         item_id = str(event["queryStringParameters"]["id"]) or None
         if not item_id:
             return buildResponse(400, "ID is required")
-        response = dynamodb.get_item(TableName="JittoItems", Key={"id": {"S": item_id}})
+        response = dynamodb.get_item(TableName=TABLE_NAME, Key={"id": {"S": item_id}})
 
         if "Item" not in response:
             return buildResponse(400, "Item not found")
 
-        # Extract the 'Item' from the response and stringify it
-        item_data = json.dumps(response["Item"])
+        item_data = response["Item"]
 
         return buildResponse(200, item_data)
     except ClientError as e:
