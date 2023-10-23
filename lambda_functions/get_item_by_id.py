@@ -9,7 +9,7 @@ dynamodb = boto3.client("dynamodb")
 
 def lambda_handler(event, context):
     try:
-        item_id = str(event["id"]) or None
+        item_id = str(event["queryStringParameters"]["id"]) or None
         if not item_id:
             return buildResponse(400, "ID is required")
         response = dynamodb.get_item(TableName="JittoItems", Key={"id": {"S": item_id}})
